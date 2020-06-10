@@ -1,45 +1,35 @@
-import React, { useState,useEffect } from 'react'
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import SearchBar from '../components/SearchBar.js'
-import yelp from '../API/yelp'
+import yelp from '../API/yelp';
+import useSearchBar from '../Hook/useSearchScreen';
+import Listado from '../components/Listado'
+
 
 const SearchScreen = () => {
 
     const [term, setTerm] = useState('');
-    const [result, setResult] = useState([]);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [searchAPI, results, errorMessage] = useSearchBar();
 
-    const searchAPI = async (searchTerm) => {
-        try {
-
-            const response = await yelp.get('/search', {
-                params: {
-                    limit: 10,
-                    term: searchTerm,
-                    location: 'new york'
-                }
-            });
-            setResult(response.data.businesses);
-            setErrorMessage(' ');
-
-        } catch (error) {
-            setErrorMessage('Algo salio mal');
-        }
+    const filtroPrecio = (price) => {
+        return results.filter(result => {
+            return result.price === price;
+        });
     };
 
-    useEffect(() => {
-        searchAPI('sushi');
-    }, []);
-
     return (
-        <View>
+        <View style={{flex:1}}>
             <SearchBar
                 Term={term}
                 onTermChange={setTerm}
-                onTermSubmit={()=>searchAPI(term)}
+                onTermSubmit={() => searchAPI(term)}
             />
-            <Text>Hemos encontrado {result.length} resultados</Text>
             {errorMessage ? <Text>{errorMessage}</Text> : null}
+            <ScrollView>
+                <Listado results={filtroPrecio('$')} titulo='Calidad Precio' />
+                <Listado results={filtroPrecio('$$')} titulo='Economico' />
+                <Listado results={filtroPrecio('$$$')} titulo='Caros' />
+            </ScrollView>
         </View>
     );
 };
