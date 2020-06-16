@@ -10,9 +10,9 @@ export default () => {
 
             const response = await yelp.get('/search', {
                 params: {
-                    limit: 30,
+                    limit:20,
                     term: searchTerm,
-                    location: 'new york'
+                    location: 'San Jose'
                 }
             });
             setResult(response.data.businesses);
@@ -24,7 +24,7 @@ export default () => {
     };
 
     useEffect(() => {
-        searchAPI('sushi');
+        searchAPI('pasta');
     }, []);
 
     return [searchAPI,results,errorMessage];

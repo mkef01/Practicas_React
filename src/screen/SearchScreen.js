@@ -6,11 +6,10 @@ import useSearchBar from '../Hook/useSearchScreen';
 import Listado from '../components/Listado'
 
 
-const SearchScreen = () => {
+const SearchScreen = ({navigation}) => {
 
     const [term, setTerm] = useState('');
     const [searchAPI, results, errorMessage] = useSearchBar();
-
     const filtroPrecio = (price) => {
         return results.filter(result => {
             return result.price === price;
@@ -18,7 +17,7 @@ const SearchScreen = () => {
     };
 
     return (
-        <View style={{flex:1}}>
+        <>
             <SearchBar
                 Term={term}
                 onTermChange={setTerm}
@@ -26,11 +25,11 @@ const SearchScreen = () => {
             />
             {errorMessage ? <Text>{errorMessage}</Text> : null}
             <ScrollView>
-                <Listado results={filtroPrecio('$')} titulo='Calidad Precio' />
-                <Listado results={filtroPrecio('$$')} titulo='Economico' />
-                <Listado results={filtroPrecio('$$$')} titulo='Caros' />
+                <Listado results={filtroPrecio('$')} titulo='Calidad Precio' navigation={navigation} />
+                <Listado results={filtroPrecio('$$')} titulo='Economico' navigation={navigation} />
+                <Listado results={filtroPrecio('$$$')} titulo='Caros' navigation={navigation} />
             </ScrollView>
-        </View>
+        </>
     );
 };
 
