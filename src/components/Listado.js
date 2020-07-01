@@ -1,9 +1,12 @@
 import React from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import Detalle from '../components/Detalle'
+import {withNavigation} from 'react-navigation'
 
 const Listado = ({ titulo, results, navigation }) => {
-    console.log(results);
+    if(!results.length){
+        return null;
+    }
     return (
         <View style={{ marginHorizontal: 15 }}>
             <Text style={styles.titleStyle}>{titulo}</Text>
@@ -13,7 +16,7 @@ const Listado = ({ titulo, results, navigation }) => {
                 keyExtractor={(results) => results.id}
                 renderItem={({ item }) => {
                     return (
-                        <TouchableOpacity onPress={() => navigation.navigate('restaurantes')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('restaurantes',{id:item.id})}>
                             <Detalle result={item} />
                         </TouchableOpacity>
                     )
@@ -27,8 +30,8 @@ const Listado = ({ titulo, results, navigation }) => {
 const styles = StyleSheet.create({
     titleStyle: {
         fontSize: 18,
-        fontWeight: 'bold'
+        fontWeight: 'bold' 
     }
 });
 
-export default Listado;
+export default withNavigation(Listado);

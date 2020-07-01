@@ -6,7 +6,7 @@ import useSearchBar from '../Hook/useSearchScreen';
 import Listado from '../components/Listado'
 
 
-const SearchScreen = ({navigation}) => {
+const SearchScreen = () => {
 
     const [term, setTerm] = useState('');
     const [searchAPI, results, errorMessage] = useSearchBar();
@@ -25,9 +25,9 @@ const SearchScreen = ({navigation}) => {
             />
             {errorMessage ? <Text>{errorMessage}</Text> : null}
             <ScrollView>
-                <Listado results={filtroPrecio('$')} titulo='Calidad Precio' navigation={navigation} />
-                <Listado results={filtroPrecio('$$')} titulo='Economico' navigation={navigation} />
-                <Listado results={filtroPrecio('$$$')} titulo='Caros' navigation={navigation} />
+                <Listado results={filtroPrecio('$')} titulo='Calidad Precio' />
+                <Listado results={filtroPrecio('$$')} titulo='Economico' />
+                <Listado results={filtroPrecio('$$$')} titulo='Caros' />
             </ScrollView>
         </>
     );
